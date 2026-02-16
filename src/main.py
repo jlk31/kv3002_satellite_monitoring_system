@@ -1,6 +1,7 @@
 # Satellite Monitoring System
 # Imports
 from microbit import *
+import radio
 import music
 
 # Configuration Constants
@@ -16,6 +17,9 @@ TEMP_CRITICAL_HIGH = 30
 TEMP_WARNING_LOW = 15
 TEMP_WARNING_HIGH = 28
 CHECK_INTERVAL = 5000
+
+radio.set_group(42)  # Set radio group for communication
+satellite_id = 69  # Unique ID for this satellite
 
 # Warning and Critical Tones for Speaker
 def warning_buzzer():
@@ -42,3 +46,7 @@ def check_temp():
 while True:
     check_temp()
     sleep(CHECK_INTERVAL)
+
+def send_data():
+    json_str = {"s":satellite_id,"t":temp}
+    radio.send_string(json_str)
